@@ -1,0 +1,15 @@
+ThrusterFL:
+    Module: Gamepad_ThrusterOrder
+    Class: Thruster
+    Address: 0x01
+    Invert: True
+ThrusterFR:
+     Module: Gamepad_ThrusterOrder
+     Class: Thruster
+     Address: 0x02
+     Invert: True
+EMGrout:
+    Module: ElectroMagnet
+    Class: EM
+    Address: 0x04
+    
