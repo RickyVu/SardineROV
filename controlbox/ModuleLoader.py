@@ -1,48 +1,96 @@
 from pubsub import pub
+import yaml
 from ModuleBase import Module
 from threading import Timer
-import Gamepad_ThrusterOrder as ThrusterOrder
-#from Gamepad_Normalize import Gamepad
+#from Thruster_Message import Thruster
 
-class Loader():
-    def load(frequency, name, module, varclass, address, invert=False):
-        exec('import '+module+' as '+varclass) 
+class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
+    def manual_load(name, file, varclass, args, frequency=1):
+        exec('from '+file+' import '+varclass) 
+        exec(name+'='+varclass+"('"+name+"',"+str(args)+')')
+        exec(name+'.start('+str(frequency)+')')
 
-        if invert == False:
-            exec(name+'='+varclass+'.'+varclass+'("'+name+'",'+address+')')
-        else:
-            exec(name+'='+varclass+'.'+varclass+'("'+name+'",'+address+','+invert+')')
-        if frequency != 0:
-            exec(str(name) + ".start(" + str(frequency) + ")")
-        else:
-            exec(str(name) + ".start")
+    def load_all(YAML_file, frequency=1):
+        try:
+            content = yaml.load(open(str(YAML_file), 'r'))
+            for nodeName in content:
+                args = ''
+                Counter = 1
+                args = args + "name='" + str(nodeName)+"',"
+                moduleName = content[nodeName]
+                for key in moduleName:
+                    value = moduleName[key]
+                    Counter+=1
+                    if key=='file':
+                        file = str(value)
+                    elif key=='varclass':
+                        varclass = str(value)
+                        Counter-=1
+                    elif key=='address' and Counter == len(content[nodeName]):
+                        args = args + key+"="+hex((moduleName[key]))
+                    elif key=='address':
+                        args = args + key+"="+hex((moduleName[key]))+","
+                    elif Counter == len(content[nodeName]):
+                        args = args + key+"='"+str(value)+"'"
+                    else:
+                        args = args + key+"='"+str(value)+"',"
+                exec('from '+file+' import '+varclass) 
+                exec(nodeName+'='+varclass+"("+args+")")
+                print(nodeName,'successfully loaded')
+                exec(nodeName+'.start('+str(frequency)+')')
+        except FileNotFoundError:
+            print('File not found')
+
+    def load_byName(Name, YAML_file, frequency):
+        try:
+            content = yaml.load(open(str(YAML_file), 'r'))
+            args = ''
+            Counter = 0
+            for nodeName in content:
+                if Name.lower() == nodeName.lower():
+                    args = args + "name='" + str(nodeName)+"',"
+                    moduleName = content[nodeName]
+                    for key in moduleName:
+                        Counter+=1
+                        value = moduleName[key]
+                        if key=='file':
+                            file = str(value)
+                        elif key=='varclass':
+                            varclass = str(value)
+                            Counter-=1
+                        elif key=='address' and Counter == len(content[nodeName]):
+                            args = args + key+"="+hex((moduleName[key]))
+                        elif key=='address':
+                            args = args + key+"="+hex((moduleName[key]))+","
+                        elif Counter == len(content[nodeName]):
+                            args = args + key+"='"+str(value)+"'"
+                        else:
+                            args = args + key+"='"+str(value)+"',"
+                    exec('from '+file+' import '+varclass) 
+                    exec(nodeName+'='+varclass+"("+args+")")
+                    print(nodeName,'successfully loaded')
+                    exec(nodeName+'.start('+str(frequency)+')')
+                    break
+                else:
+                    print('Name not found')
+        except FileNotFoundError:
+            print('File not found')
 
     def loadfrom(file, module, name, frequency):
         exec("from " + str(file) + " import " + str(module))
         exec(str(name) + " = " + str(module) + "()")
         exec(str(name) + ".start(" + str(frequency) + ")")
-    
-#import Gamepad_ThrusterOrder as ThrusterOrder
-#ThrusterFL = ThrusterOrder.Thruster("ThrusterFL", 0x00, True)
-#ThrusterFL.start(1000)
 
-
-
-
-
-
-#Loader.load(10000, 'ThrusterFL', 'Gamepad_ThrusterOrder', 'Thruster', '0x01', 'True')
-#Loader.load(0, 'ThrusterFR', 'Gamepad_ThrusterOrder', 'Thruster', '0x02', 'False')
-
-#t = ThrusterOrder.Thruster("ThrusterName", address=0x01, invert=False)
+    def load_controls(gpfrequency,fafrequency):
+        from Gamepad_Normalize import Gamepad
+        from Thruster_Profile import FormulaApply
+        gp = Gamepad()
+        gp.start(gpfrequency)
+        fa = FormulaApply()
+        fa.start(fafrequency)
 
 #Loader.loadfrom("Gamepad_Normalize", "Gamepad", "gp", "10000")
-#Loader.load("Gamepad", "gp", "10000")
-'''
-def Listener(arg1):
-    print(arg1)
-pub.subscribe(Listener, 'movement')
-'''
-
-#Loader.thrusterload("ThrusterFL", "0x00", "10") 
-#Loader.thrusterload("ThrusterFR", "0x01", "10")
+#Loader.loadfrom("Thruster_Profile", "FormulaApply", "fa","100")
+#Loader.manual_load('FL', 'Thruster_Message', 'Thruster', "0x011,True", 10)
+#Loader.load_byName('ThrusterFR', 'config.yaml',10)
+#Loader.load_all('config.yaml', 10)

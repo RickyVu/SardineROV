@@ -1,15 +1,35 @@
 ThrusterFL:
-    Module: Gamepad_ThrusterOrder
-    Class: Thruster
-    Address: 0x01
-    Invert: True
+    file: Thruster_Message
+    varclass: Thruster
+    address: 0x011
+    invert: False
 ThrusterFR:
-     Module: Gamepad_ThrusterOrder
-     Class: Thruster
-     Address: 0x02
-     Invert: True
+    file: Thruster_Message
+    varclass: Thruster
+    address: 0x012
+    invert: False
+ThrusterBL:
+    file: Thruster_Message
+    varclass: Thruster
+    address: 0x013
+    invert: False
+ThrusterBR:
+    file: Thruster_Message
+    varclass: Thruster
+    address: 0x014
+    invert: False
+ThrusterUL:
+    file: Thruster_Message
+    varclass: Thruster
+    address: 0x015
+    invert: False
+ThrusterUR:
+    file: Thruster_Message
+    varclass: Thruster
+    address: 0x016
+    invert: False
 EMGrout:
-    Module: ElectroMagnet
-    Class: EM
-    Address: 0x04
+    file: ElectroMagnet
+    varclass: EM
+    address: 0x04
     
