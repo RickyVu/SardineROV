@@ -34,6 +34,7 @@ def SetThruster(S, D, Y):
 class FormulaApply(Module):
     def __init__(self):
         pub.subscribe(self.movementListener, 'movement')
+        self.max_limit = 1
         
     def run(self):
         pass
@@ -45,12 +46,12 @@ class FormulaApply(Module):
         YawPower = PowerFunction(YawPower, 30)
         UpdownPower = PowerFunction(Updown, 30)
         FinalList = SetThruster(StrafePower, DrivePower, YawPower)
-        pub.sendMessage('ThrusterFL', power = FinalList[0])
-        pub.sendMessage('ThrusterFR', power = FinalList[1])
-        pub.sendMessage('ThrusterBL', power = FinalList[2])
-        pub.sendMessage('ThrusterBR', power = FinalList[3])
-        pub.sendMessage('ThrusterUL', power = UpdownPower)
-        pub.sendMessage('ThrusterUR', power = UpdownPower)
+        pub.sendMessage('ThrusterFL', power = FinalList[0]*self.max_limit)
+        pub.sendMessage('ThrusterFR', power = FinalList[1]*self.max_limit)
+        pub.sendMessage('ThrusterBL', power = FinalList[2]*self.max_limit)
+        pub.sendMessage('ThrusterBR', power = FinalList[3]*self.max_limit)
+        pub.sendMessage('ThrusterUL', power = UpdownPower*self.max_limit)
+        pub.sendMessage('ThrusterUR', power = UpdownPower*self.max_limit)
         #print(FinalList[0])
         #print(DrivePower)
 '''
