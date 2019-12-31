@@ -107,7 +107,7 @@ class ThrusterWidget():
 class Widget:
     def __init__(self):
         self.Surface = pygame.Surface(self.getDimension())
-
+        
     def getDimension(self):
         return (50,50)
 
@@ -117,6 +117,7 @@ class Widget:
 
     def update(self, screen, coordinate):
         screen.blit(self.surface_return(), coordinate)
+        screen.blit(self.text_Surface, (coordinate[0],coordinate[1]+50))
         
     def draw(self, surface):
         pass
@@ -147,6 +148,7 @@ class ThrusterWidget(NodeWidget):
     def draw(self, surface):
         super().draw(surface)
         self._draw_gauge(surface, self.power)
+        self._thrust_percentage()
 
     def _power_listener(self, output):
         self.power = output
@@ -169,6 +171,14 @@ class ThrusterWidget(NodeWidget):
         ##Draw arrow
         pygame.draw.line(surface, BLUE_TO_RED, (self.center), (self.r*math.cos(theta-math.pi/2)+self.dim[0]/2, self.r*math.sin(theta-math.pi/2)+self.dim[1]/2), 5)
 
+    def _thrust_percentage(self):
+        pygame.font.init()
+        self.myfont = pygame.font.SysFont('Comic Sans MS', 20)
+        if self.power>0:
+            self.text_Surface = self.myfont.render(str("{:.1f}".format(self.power*100/32767))+'%', True, (200, 200, 200))
+        else:
+            self.text_Surface = self.myfont.render(str("{:.1f}".format(self.power*100/32768))+'%', True, (200, 200, 200))
+            
 def assemble(self, List):
     x = 0
     y = 0

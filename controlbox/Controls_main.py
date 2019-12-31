@@ -1,14 +1,16 @@
 from ModuleLoader import Loader
-from GUI_Widget import ThrusterWidget
+#from GUI_Widget import ThrusterWidget
 #from CAN_Handler import CAN_Handler  
-import pygame
+#import pygame
 
 
 Loader.load_all('config.yaml')
-#Handler = CAN_Handler()
-#Handler.start(10)
-#Loader.load_byName('ThrusterUR', 'config.yaml',10)
-#Loader.load_byName("ThrusterFL", 'config.yaml', 10)
+Loader.load_gui('config.yaml', 500, 500)
+
+#usable sample alternatives
+'''
+Loader.load_byName(['GAMEPAD', 'Thruster_Profile', 'ThrusTERFL', 'ThrusterFR'], 'config.yaml')
+'''
 '''
 FL = Thruster('ThrusterFL', 0x011, False)
 FL.start(10)
@@ -23,19 +25,15 @@ UL.start(10)
 UR = Thruster('ThrusterUR', 0x016, False)
 UR.start(10)
 '''
-#def printinterval(i):
-    #print(i)
-    #Timer(1, printinterval, [i+1]).start()
-
-#Timer(1, printinterval, [1]).start()'
+'''
 TA = ThrusterWidget(15, 'ThrusterFL')
 TB = ThrusterWidget(15, 'ThrusterFR')
 TC = ThrusterWidget(15, 'ThrusterBL')
 TD = ThrusterWidget(15, 'ThrusterBR')
 TE = ThrusterWidget(15, 'ThrusterUL')
 TF = ThrusterWidget(15, 'ThrusterUR')
-
-
+'''
+'''
 pygame.init()
 screen = pygame.display.set_mode((300, 250))
 while True:
@@ -51,4 +49,4 @@ while True:
     TF.update(screen, (250,0))
 
     pygame.display.flip()
-
+'''

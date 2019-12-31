@@ -1,45 +1,57 @@
 Gamepad:
-    file: Gamepad_Normalize
+    file: Gamepad_Normalize 
     varclass: Gamepad
     frequency: 1000000
-Formula:
+Thruster_Profile:
     file: Thruster_Profile
     varclass: FormulaApply
     frequency: 100
 ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
+    name: ThrusterFL
     address: 0x015
     invert: False
     frequency: 10
+    gui: True
 ThrusterFR:
     file: Thruster_Message
     varclass: Thruster
+    name: ThrusterFR
     address: 0x016
     invert: False
     frequency: 10
+    gui: True
 ThrusterBL:
     file: Thruster_Message
     varclass: Thruster
+    name: ThrusterBL
     address: 0x017
     invert: False
     frequency: 10
+    gui: True
 ThrusterBR:
     file: Thruster_Message
     varclass: Thruster
+    name: ThrusterBR
     address: 0x018
     invert: False
     frequency: 10
+    gui: True
 ThrusterUL:
     file: Thruster_Message
     varclass: Thruster
+    name: ThrusterUL
     address: 0x019
     invert: False
     frequency: 10
+    gui: True
 ThrusterUR:
     file: Thruster_Message
     varclass: Thruster
+    name: ThrusterUR
     address: 0x01A
     invert: False
     frequency: 10
+    gui: True
 
