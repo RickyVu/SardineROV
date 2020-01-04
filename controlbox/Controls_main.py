@@ -1,8 +1,11 @@
 from ModuleLoader import Loader
 #from GUI_Widget import ThrusterWidget
-#from CAN_Handler import CAN_Handler  
+from CAN_Handler import CAN_Handler
+#from Thruster_Message import Thruster
 #import pygame
 
+Handler = CAN_Handler()
+Handler.start(100)
 
 Loader.load_all('config.yaml')
 Loader.load_gui('config.yaml', 600, 500)

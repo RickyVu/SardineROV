@@ -4,7 +4,7 @@ from ModuleBase import Module
 class Thruster(Module):
     def __init__(self, name, address, invert):
         self.name = name
-        self.address = address
+        self.address = str(address)
         self.invert = invert
         pub.subscribe(self.__listener, name)
         self.target_power = 0
@@ -20,12 +20,12 @@ class Thruster(Module):
         if rate<(self.max_rate*-1):
             rate = self.max_rate*-1
         self.current_power = rate + self.current_power
-
         if self.invert == True: #Deal with invert
-            self.output_power = self.current_power *-1
+           self.output_power = self.current_power
         else:
-            self.output_power = self.current_power
-            
+           self.output_power = self.current_power *-1
+        #print(self.invert)
+
         #Set to range of -32768 to 32767
         if self.output_power>=0:
             self.output_power= int(self.output_power*32767)

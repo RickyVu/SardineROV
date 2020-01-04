@@ -10,7 +10,7 @@ ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFL
-    address: 0x015
+    address: 0x017
     invert: False
     frequency: 10
     gui: True
@@ -18,7 +18,7 @@ ThrusterFR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFR
-    address: 0x016
+    address: 0x015
     invert: False
     frequency: 10
     gui: True
@@ -26,7 +26,7 @@ ThrusterBL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBL
-    address: 0x017
+    address: 0x018
     invert: False
     frequency: 10
     gui: True
@@ -34,7 +34,7 @@ ThrusterBR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBR
-    address: 0x018
+    address: 0x019
     invert: False
     frequency: 10
     gui: True
@@ -42,7 +42,7 @@ ThrusterUL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUL
-    address: 0x019
+    address: 0x016
     invert: False
     frequency: 10
     gui: True
