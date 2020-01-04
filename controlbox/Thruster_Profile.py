@@ -6,7 +6,7 @@ import time
 #constants
 Strafe = (1, -1, 1, -1)
 Drive = (-1, -1, 1, 1)
-Yaw = (1, -1, -1, 1)
+Yaw = (-1, 1, 1, -1)
 
 def PowerFunction(A, B):
     if A >=0:
