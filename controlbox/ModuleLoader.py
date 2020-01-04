@@ -102,13 +102,13 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
     def load_gui(YAML_file, screen_width, screen_height):
         import pygame
         from GUI_Widget import ThrusterWidget
-        class_name_list = []
+        object_list = []
         gui_loop = False
         try:
             content = yaml.load(open(str(YAML_file), 'r'))
             for nodeName in content:
                 gui = False
-                class_name = str(nodeName)+'_Widget'
+                instance_name = str(nodeName)+'_Widget'
                 moduleName = content[nodeName]
                 for key in moduleName:
                     value = moduleName[key]
@@ -119,22 +119,24 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
                             gui = True
                             gui_loop = True
                 if gui == True:
-                    exec(f"{class_name} = {varclass}Widget(15, '{nodeName}')")
-                    class_name_list = class_name_list + [str(nodeName)+'_Widget']
-                    print(f"{class_name} successfully loaded")
+                    exec(f"{instance_name} = {varclass}Widget('{nodeName}')")
+                    object_list.append(eval(instance_name))
+                    print(f"{instance_name} successfully loaded")
+                    
             if gui_loop== True:
                 pygame.init()
                 screen = pygame.display.set_mode((screen_width, screen_height))
                 while True:
                     screen.fill((0, 0, 0))
                     x = 0
+                    y = 0
                     for event in pygame.event.get():
                         if event.type == pygame.QUIT:
                             pygame.quit()
                             quit()
-                    for class_name in class_name_list:
-                        exec(f"{class_name}.update(screen, ({x}, 0))")
-                        x = x+80
+                    for objects in object_list:
+                        screen.blit(objects.update(), (x,y))
+                        x = x+ objects.getDimension()[0]
                     pygame.display.flip()
 
             

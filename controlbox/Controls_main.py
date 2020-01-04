@@ -5,7 +5,7 @@ from ModuleLoader import Loader
 
 
 Loader.load_all('config.yaml')
-Loader.load_gui('config.yaml', 500, 500)
+Loader.load_gui('config.yaml', 600, 500)
 
 #usable sample alternatives
 '''
