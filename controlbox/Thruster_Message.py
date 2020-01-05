@@ -23,7 +23,6 @@ class Thruster(Module):
         self.output_power = self.current_power
         if self.invert == 'True': #Deal with invert
             self.output_power = self.output_power*-1
-            print('Inverted')
 
         #Set to range of -32768 to 32767
         if self.output_power>=0:
