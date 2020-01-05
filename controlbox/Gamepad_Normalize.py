@@ -35,6 +35,7 @@ class Gamepad(Module):
         self.strafe = 0
         self.yaw = 0
         self.updown = 0
+        self.profile_change = 1
    
     def run(self):
         global previous_message
@@ -50,7 +51,11 @@ class Gamepad(Module):
                 self.yaw = deadzoneright(normalize(event.state))
             elif (analogcode == "ABS_RY"):
                 self.updown = deadzoneright(normalize(event.state))
+            elif (analogcode == "BTN_TL") and event.state==1:
+                self.profile_change = self.profile_change*-1
         movement_message = (self.strafe, self.drive, self.yaw, self.updown)
+        pub.sendMessage('controls', control = self.profile_change)
+
                 
         if previous_message != movement_message:
             pub.sendMessage('movement', arg1=movement_message)

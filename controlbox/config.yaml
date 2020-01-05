@@ -2,10 +2,20 @@ Gamepad:
     file: Gamepad_Normalize 
     varclass: Gamepad
     frequency: 1000000
-Thruster_Profile:
+ProfileA:
     file: Thruster_Profile
     varclass: FormulaApply
     frequency: 100
+    activate: -1
+    max_percentage: 100
+    formula_modifier: 30
+ProfileB:
+    file: Thruster_Profile
+    varclass: FormulaApply
+    frequency: 100
+    activate: 1
+    max_percentage: 70
+    formula_modifier: 30
 ThrusterFL:
     file: Thruster_Message
     varclass: Thruster

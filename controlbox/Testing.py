@@ -18,7 +18,17 @@ def Add(X, Y, Z=0):
 
 print(Add(10, 10))
 '''
+'''
 def Add(X, Y= 30):
     return X+Y
 
 print(Add(10))
+'''
+while True:
+    from inputs import get_gamepad
+    events= get_gamepad()
+    for event in events:
+        analogcode = event.code[0:6]
+        #print(event.code)
+        if analogcode == 'BTN_TL':
+            print(event.state)

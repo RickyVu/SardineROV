@@ -32,28 +32,36 @@ def SetThruster(S, D, Y):
     return List
 
 class FormulaApply(Module):
-    def __init__(self):
+    def __init__(self, max_percentage=100, formula_modifier=30, activate = 1):
         pub.subscribe(self.movementListener, 'movement')
-        self.max_limit = 1
+        pub.subscribe(self.controlListener, 'controls')
+        self.max_percentage = int(max_percentage)/100
+        self.formula_modifier = int(formula_modifier)
+        self.activate = int(activate)
+        self.profile_change = 1
         
     def run(self):
         pass
     
     def movementListener(self,arg1):
-        StrafePower, DrivePower, YawPower, Updown = arg1
-        StrafePower = PowerFunction(StrafePower, 30)
-        DrivePower = PowerFunction(DrivePower, 30)
-        YawPower = PowerFunction(YawPower, 30)
-        UpdownPower = PowerFunction(Updown, 30)
-        FinalList = SetThruster(StrafePower, DrivePower, YawPower)
-        pub.sendMessage('ThrusterFL', power = FinalList[0]*self.max_limit)
-        pub.sendMessage('ThrusterFR', power = FinalList[1]*self.max_limit)
-        pub.sendMessage('ThrusterBL', power = FinalList[2]*self.max_limit)
-        pub.sendMessage('ThrusterBR', power = FinalList[3]*self.max_limit)
-        pub.sendMessage('ThrusterUL', power = UpdownPower*self.max_limit)
-        pub.sendMessage('ThrusterUR', power = UpdownPower*self.max_limit)
+        if self.profile_change == self.activate:
+            StrafePower, DrivePower, YawPower, Updown = arg1
+            StrafePower = PowerFunction(StrafePower, self.formula_modifier) #formula modify increase, curve increase
+            DrivePower = PowerFunction(DrivePower, self.formula_modifier)
+            YawPower = PowerFunction(YawPower, self.formula_modifier)
+            UpdownPower = PowerFunction(Updown, self.formula_modifier)
+            FinalList = SetThruster(StrafePower, DrivePower, YawPower)
+            pub.sendMessage('ThrusterFL', power = FinalList[0]*self.max_percentage)
+            pub.sendMessage('ThrusterFR', power = FinalList[1]*self.max_percentage)
+            pub.sendMessage('ThrusterBL', power = FinalList[2]*self.max_percentage)
+            pub.sendMessage('ThrusterBR', power = FinalList[3]*self.max_percentage)
+            pub.sendMessage('ThrusterUL', power = UpdownPower*self.max_percentage)
+            pub.sendMessage('ThrusterUR', power = UpdownPower*self.max_percentage)
         #print(FinalList[0])
         #print(DrivePower)
+
+    def controlListener(self, control):
+        self.profile_change = control #1 or -1
 '''
 if __name__ == '__main__':
     gp =Gamepad()
