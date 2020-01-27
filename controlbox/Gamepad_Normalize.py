@@ -2,21 +2,22 @@
 DeadZone_ThresholdL = 0.06
 DeadZone_ThresholdR = 0.08
 Normalize_Constant = 32768
+Normalize_Constant_Z = 256
 
 # variables
-movement_message = (0, 0, 0, 0)
-previous_message = (2, 2, 2, 2)
+movement_message = (0, 0, 0, 0, 0, 0)
+previous_message = (2, 2, 2, 2, 2, 2)
 
 from threading import Timer
 from inputs import get_gamepad
 from pubsub import pub
 from ModuleBase import Module
 
-def normalize(X):
+def normalize(X, constant = Normalize_Constant):
     if X < 0:
-        return (X/Normalize_Constant)
+        return (X/constant)
     else:
-        return (X/(Normalize_Constant-1))
+        return (X/(constant-1))
 
 def deadzoneleft(X):
     if X <(DeadZone_ThresholdL) and X > (-DeadZone_ThresholdL):
@@ -35,6 +36,8 @@ class Gamepad(Module):
         self.strafe = 0
         self.yaw = 0
         self.updown = 0
+        self.tilt_front = 0
+        self.tilt_back = 0
         self.profile_change = 1
    
     def run(self):
@@ -51,11 +54,17 @@ class Gamepad(Module):
                 self.yaw = deadzoneright(normalize(event.state))
             elif (analogcode == "ABS_RY"):
                 self.updown = deadzoneright(normalize(event.state))
+                
+            elif (analogcode == "ABS_Z"):
+                self.tilt_back = (-1)*normalize(event.state, Normalize_Constant_Z)
+            elif (analogcode == "ABS_RZ"):
+                self.tilt_front = normalize(event.state, Normalize_Constant_Z)
+
             elif (analogcode == "BTN_TL") and event.state==1:
                 self.profile_change = self.profile_change*-1
-        movement_message = (self.strafe, self.drive, self.yaw, self.updown)
-        pub.sendMessage('controls', control = self.profile_change)
 
+        movement_message = (self.strafe, self.drive, self.yaw, self.updown, self.tilt_front, self.tilt_back)
+        pub.sendMessage('controls', control = self.profile_change)
                 
         if previous_message != movement_message:
             pub.sendMessage('movement', arg1=movement_message)

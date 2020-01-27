@@ -48,18 +48,18 @@ ThrusterBR:
     invert: False
     frequency: 10
     gui: True
-ThrusterUL:
+ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
-    name: ThrusterUL
+    name: ThrusterUF
     address: 0x016
     invert: True
     frequency: 10
     gui: True
-ThrusterUR:
+ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
-    name: ThrusterUR
+    name: ThrusterUB
     address: 0x01A
     invert: True
     frequency: 10

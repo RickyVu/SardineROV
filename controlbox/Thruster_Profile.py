@@ -15,19 +15,27 @@ def PowerFunction(A, B):
         return -1/B*(((B+1)**-A)-1) 
         
 
-def Normalize(X, Y, Z):
-    Magnitude = abs(X) + abs(Y) + abs(Z)
-    if Magnitude == 0:
-        return 0
-    elif Magnitude >= 1:
-        return (X+Y+Z)/Magnitude
+def Normalize(Tuple):
+    Magnitude = 0
+    Total = 0
+    for value in Tuple:
+        Magnitude = Magnitude + abs(value)
+        Total = Total + value
+    if Magnitude >= 1:
+        return Total/Magnitude
     else:
-        return X + Y + Z
+        return Total
+
+def SetDuo(U, TF, TB):
+    List = [U, U]
+    List[1] = Normalize((U, -TF, -TB))
+    List[0] = Normalize((U, TF, TB))
+    return List
 
 def SetThruster(S, D, Y):
     List = [0, 0, 0, 0]
     for i in range(0, 4):
-        a = Normalize(Strafe[i]*S, Drive[i]*D, Yaw[i]*Y)
+        a = Normalize((Strafe[i]*S, Drive[i]*D, Yaw[i]*Y))
         List[i] = a
     return List
 
@@ -45,18 +53,22 @@ class FormulaApply(Module):
     
     def movementListener(self,arg1):
         if self.profile_change == self.activate:
-            StrafePower, DrivePower, YawPower, Updown = arg1
+            StrafePower, DrivePower, YawPower, Updown, Tilt_F, Tilt_B = arg1
             StrafePower = PowerFunction(StrafePower, self.formula_modifier) #formula modify increase, curve increase
             DrivePower = PowerFunction(DrivePower, self.formula_modifier)
             YawPower = PowerFunction(YawPower, self.formula_modifier)
             UpdownPower = PowerFunction(Updown, self.formula_modifier)
+            Tilt_F_Power = PowerFunction(Tilt_F, self.formula_modifier)
+            Tilt_B_Power = PowerFunction(Tilt_B, self.formula_modifier)
+            
             FinalList = SetThruster(StrafePower, DrivePower, YawPower)
+            DuoList = SetDuo(UpdownPower, Tilt_F_Power, Tilt_B_Power)
             pub.sendMessage('ThrusterFL', power = FinalList[0]*self.max_percentage)
             pub.sendMessage('ThrusterFR', power = FinalList[1]*self.max_percentage)
             pub.sendMessage('ThrusterBL', power = FinalList[2]*self.max_percentage)
             pub.sendMessage('ThrusterBR', power = FinalList[3]*self.max_percentage)
-            pub.sendMessage('ThrusterUL', power = UpdownPower*self.max_percentage)
-            pub.sendMessage('ThrusterUR', power = UpdownPower*self.max_percentage)
+            pub.sendMessage('ThrusterUF', power = DuoList[1]*self.max_percentage)
+            pub.sendMessage('ThrusterUB', power = DuoList[0]*self.max_percentage)
         #print(FinalList[0])
         #print(DrivePower)
 
