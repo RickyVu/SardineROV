@@ -6,16 +6,30 @@ ProfileA:
     file: Thruster_Profile
     varclass: FormulaApply
     frequency: 100
-    activate: -1
+    activate: 'A'
     max_percentage: 100
     formula_modifier: 30
 ProfileB:
     file: Thruster_Profile
     varclass: FormulaApply
     frequency: 100
-    activate: 1
+    activate: 'B'
     max_percentage: 70
     formula_modifier: 30
+ProfileC:
+    file: Thruster_Profile
+    varclass: FormulaApply
+    frequency: 100
+    activate: 'C'
+    max_percentage: 30
+    formula_modifier: 30
+ProfileD:
+    file: Thruster_Profile
+    varclass: FormulaApply
+    frequency: 100
+    activate: 'D'
+    max_percentage: 100
+    formula_modifier: 0.1    
 ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
