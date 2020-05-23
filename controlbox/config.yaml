@@ -2,6 +2,14 @@ Gamepad:
     file: Gamepad_Normalize 
     varclass: Gamepad
     frequency: 1000000
+TransectLine:
+    file: CV_TransectLine3
+    varclass: TransectLine
+    frequency: 100
+    drive_power: 0.3
+    strafe_mod: 0.5
+    yaw_mod: 0.5
+    updown_mod: 0.99
 ProfileA:
     file: Thruster_Profile
     varclass: FormulaApply
@@ -37,7 +45,6 @@ ThrusterFL:
     address: 0x017
     invert: True
     frequency: 10
-    gui: True
 ThrusterFR:
     file: Thruster_Message
     varclass: Thruster
@@ -45,7 +52,6 @@ ThrusterFR:
     address: 0x015
     invert: True
     frequency: 10
-    gui: True
 ThrusterBL:
     file: Thruster_Message
     varclass: Thruster
@@ -53,7 +59,6 @@ ThrusterBL:
     address: 0x018
     invert: True
     frequency: 10
-    gui: True
 ThrusterBR:
     file: Thruster_Message
     varclass: Thruster
@@ -61,7 +66,6 @@ ThrusterBR:
     address: 0x01B
     invert: False
     frequency: 10
-    gui: True
 ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
@@ -69,7 +73,6 @@ ThrusterUF:
     address: 0x016
     invert: True
     frequency: 10
-    gui: True
 ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
@@ -77,5 +80,11 @@ ThrusterUB:
     address: 0x01A
     invert: True
     frequency: 10
-    gui: True
+GUI:
+    file: work_in_progress_GUI
+    varclass: GUI
+    screen_width: 500
+    screen_height: 500
+    frequency: 80
+
 

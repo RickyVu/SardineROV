@@ -21,7 +21,7 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
             Names[i] = Names[i].lower()
             
         try:
-            content = yaml.load(open(str(YAML_File), 'r'))
+            content = yaml.load(open(str(YAML_File), 'r'), Loader = yaml.FullLoader)
             for nodeName in content:
                 args = ''
                 if nodeName.lower() in Names:
@@ -61,7 +61,7 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
 
     def load_all(YAML_File):
         try:
-            content = yaml.load(open(str(YAML_File), 'r'))
+            content = yaml.load(open(str(YAML_File), 'r'), Loader = yaml.FullLoader)
             frequency = 1
             for nodeName in content:
                 args = ''
@@ -105,7 +105,7 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
         object_list = []
         gui_loop = False
         try:
-            content = yaml.load(open(str(YAML_file), 'r'))
+            content = yaml.load(open(str(YAML_file), 'r'), Loader = yaml.FullLoader)
             for nodeName in content:
                 gui = False
                 instance_name = str(nodeName)+'_Widget'

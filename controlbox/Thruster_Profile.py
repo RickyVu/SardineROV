@@ -42,7 +42,7 @@ def SetThruster(S, D, Y):
 class FormulaApply(Module):
     def __init__(self, max_percentage=100, formula_modifier=30, activate = 'A'):
         pub.subscribe(self.movementListener, 'movement')
-        pub.subscribe(self.controlListener, 'controls')
+        pub.subscribe(self.profileListener, 'profile')
         self.max_percentage = int(max_percentage)/100
         self.formula_modifier = float(formula_modifier)
         self.activate = activate
@@ -72,8 +72,8 @@ class FormulaApply(Module):
         #print(FinalList[0])
         #print(DrivePower)
 
-    def controlListener(self, control):
-        self.profile_change = control #A, B, C, D
+    def profileListener(self, profile):
+        self.profile_change = profile #A, B, C, D
 '''
 if __name__ == '__main__':
     gp =Gamepad()

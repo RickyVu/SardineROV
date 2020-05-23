@@ -8,7 +8,7 @@ Handler = CAN_Handler()
 Handler.start(100)
 '''
 Loader.load_all('config.yaml')
-Loader.load_gui('config.yaml', 600, 500)
+#Loader.load_gui('config.yaml', 600, 500)
 
 #usable sample alternatives
 '''
