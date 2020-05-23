@@ -30,6 +30,8 @@ class Thruster(Module):
         else:
             self.output_power= int(self.output_power*32768)
 
+        #print(self.output_power)
+
         pub_data= (self.address, self.output_power)
         pub.sendMessage('Message', pub = pub_data)
         pub.sendMessage(str(self.name)+'_Widget', output = self.output_power)

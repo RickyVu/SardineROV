@@ -1,0 +1,31 @@
+ThrusterFL:
+    file: Test
+    varclass: Thruster
+    address: 0x011
+    invert: False
+ThrusterFR:
+    file: Test
+    varclass: Thruster
+    address: 0x012
+    invert: False
+ThrusterBL:
+    file: Test
+    varclass: Thruster
+    address: 0x013
+    invert: False
+ThrusterBR:
+    file: Test
+    varclass: Thruster
+    address: 0x014
+    invert: False
+ThrusterUL:
+    file: Test
+    varclass: Thruster
+    address: 0x015
+    invert: False
+ThrusterUR:
+    file: Test
+    varclass: Thruster
+    address: 0x016
+    invert: False
+

@@ -51,10 +51,13 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
                         pass
 
                     #Execute one node
-                    exec(f"from {file} import {varclass}") 
-                    exec(f"{nodeName} = {varclass}({args})")
-                    print(f"{nodeName} successfully loaded")
-                    exec(f"{nodeName}.start({frequency})")
+                    try:
+                        exec(f"from {file} import {varclass}") 
+                        exec(f"{nodeName} = {varclass}({args})")
+                        print(f"{nodeName} successfully loaded")
+                        exec(f"{nodeName}.start({frequency})")
+                    except:
+                        print(f"{nodeName} failed to load")
 
         except FileNotFoundError:
             print('File not found')

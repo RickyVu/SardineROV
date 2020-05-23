@@ -7,8 +7,6 @@ class CAN_Handler(Module):
     def __init__(self):
         self.bus = can.interface.Bus(bustype = "socketcan", channel = "can0", bitrate = 250000)
         pub.subscribe(self.MessageListener, 'Message')
-	#import can
-	#fron can import message
 
     def MessageListener(self, pub):
         msg = can.Message(arbitration_id= eval(pub[0]),
@@ -16,6 +14,7 @@ class CAN_Handler(Module):
                           is_extended_id=False)
         print(pub[0], pub[1])
         try:
+            #print("TestTestTest")
             #print(pub)
             self.bus.send(msg)
             print("Message sent on {}".format(self.bus.channel_info))
@@ -23,6 +22,7 @@ class CAN_Handler(Module):
             print("Message NOT sent")
     
     def run(self):
+        #print("Test2Test2Test2")
         message = self.bus.recv(1)
         print(message)
 

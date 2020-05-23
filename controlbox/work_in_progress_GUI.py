@@ -69,9 +69,7 @@ class Widget:
 
     def update(self):
         self._draw(self.assemble_dict)
-        #for Tuple in self.assemble_dict.keys():
-            #for method in Tuple:
-                #pass
+        #print(self.assemble_dict)
         return self.Surface
 
     def font_render(self, dimension, string, args:'range_and_render_info'): #Input format: self.dimension,string, args = [((num1, num2),(True,COLOUR, None)),((20, None),(True, self.GREEN, None))])  
@@ -135,13 +133,13 @@ class StatusWidget(Widget):
     def _profile(self):
         self.profile_Surface.fill((0, 0, 0))
         if self.profile == 'A':
-            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 17),(True,self.WHITE, None)),((17, None),(True, self.YELLOW, None))])
+            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 18),(True,self.WHITE, None)),((18, None),(True, self.YELLOW, None))])
         elif self.profile == 'B':
-            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 17),(True,self.WHITE, None)),((17, None),(True, self.BLUE, None))])
+            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 18),(True,self.WHITE, None)),((18, None),(True, self.BLUE, None))])
         elif self.profile == 'C':
-            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 17),(True,self.WHITE, None)),((17, None),(True, self.RED, None))])
+            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 18),(True,self.WHITE, None)),((18, None),(True, self.RED, None))])
         elif self.profile == 'D':
-            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 17),(True,self.WHITE, None)),((17, None),(True, self.GREEN, None))])
+            text = self.font_render(self.dimension,f'Activated Profile: {self.profile}', args = [((0, 18),(True,self.WHITE, None)),((18, None),(True, self.GREEN, None))])
         self.profile_Surface.blit(text, (0,0))
         return self.profile_Surface
 
@@ -242,39 +240,38 @@ class ThrusterWidget(Widget):
 
 class GUI(Module):
     def __init__(self, screen_width, screen_height):
-        pygame.init()
-        self.control_invert = False
-        self.screen = pygame.display.set_mode((int(screen_width), int(screen_height)))
-        print('abaerg')
-        self.a = StatusWidget((200, 70))
-        self.b = StatusWidget((200, 90))
-        self.FL = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterFL')
-        self.FR = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterFR')
-        self.BL = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterBL')
-        self.BR = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterBR')
-        self.UF = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterUF')
-        self.UB = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterUB')
-        self.Thrusters = self.FL+self.FR+self.BL+self.BR+self.UF+self.UB
-        self.ab = self.a+self.b
-        print(self.ab.assemble_dict)
-        self.display_list = [self.Thrusters, self.a]
-        self.update_list = [self.FL, self.FR, self.BL, self.BR, self.UF, self.UB, self.a]
-        self.count = 0
-        print('################')
+        self.on = True
+        if self.on:
+            pygame.init()
+            self.control_invert = False
+            self.screen = pygame.display.set_mode((int(screen_width), int(screen_height)))
+            self.a = StatusWidget((200, 70))
+            self.b = StatusWidget((200, 90))
+            self.FL = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterFL')
+            self.FR = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterFR')
+            self.BL = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterBL')
+            self.BR = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterBR')
+            self.UF = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterUF')
+            self.UB = ThrusterWidget((int(screen_width)//6, 100), 'ThrusterUB')
+            self.Thrusters = self.FL+self.FR+self.BL+self.BR+self.UF+self.UB
+            self.ab = self.a+self.b
+            self.display_list = [self.Thrusters, self.a]
+            self.update_list = [self.FL, self.FR, self.BL, self.BR, self.UF, self.UB, self.a]
+            print('################')
 
     def run(self):
-        self.screen.fill((0, 0, 0))
-        x = 0
-        y = 0
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                 pygame.quit()
-                 quit()
-        for objects in self.display_list:
-            #print(objects.assemble_dict)
-            self.screen.blit(objects.update(), (x,y))
-            y = y + objects.height
-        for objects in self.update_list:
-            objects.update()
-        pygame.display.flip()
-
+        if self.on:
+            self.screen.fill((0, 0, 0))
+            x = 0
+            y = 0
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                     pygame.quit()
+                     #quit()
+            for objects in self.display_list:
+                #print(objects.assemble_dict)
+                self.screen.blit(objects.update(), (x,y))
+                y = y + objects.height
+            for objects in self.update_list:
+                objects.update()
+            pygame.display.flip()
