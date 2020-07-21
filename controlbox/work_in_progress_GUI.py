@@ -110,14 +110,14 @@ class StatusWidget(Widget):
         pub.subscribe(self._profile_listener, 'profile')
         pub.subscribe(self._transect_listener, 'show_transectline')
 
-    def _control_listener(self, control_inverted):
-        self.control_invert = str(control_inverted)
+    def _control_listener(self, arg):
+        self.control_invert = str(arg)
 
-    def _profile_listener(self, profile):
-        self.profile = str(profile)
+    def _profile_listener(self, arg):
+        self.profile = str(arg)
 
-    def _transect_listener(self, show_transectline):
-        self.show_transectline= str(show_transectline)
+    def _transect_listener(self, arg):
+        self.show_transectline= str(arg)
         
     def _control_invert(self):
         self.ctrl_inv_Surface.fill((0,0,0))

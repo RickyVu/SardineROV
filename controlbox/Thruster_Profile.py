@@ -45,15 +45,19 @@ class FormulaApply(Module):
         pub.subscribe(self.profileListener, 'profile')
         self.max_percentage = int(max_percentage)/100
         self.formula_modifier = float(formula_modifier)
-        self.activate = activate
+        self.activate = activate #A, B, C, D
         self.profile_change = 'A'
         
     def run(self):
         pass
+
+    def profileListener(self, message):
+        self.profile_change = message #A, B, C, D
     
-    def movementListener(self,arg1):
+    def movementListener(self, message):
+        #print("movementlistener: ", message)
         if self.profile_change == self.activate:
-            StrafePower, DrivePower, YawPower, Updown, Tilt_F, Tilt_B = arg1
+            StrafePower, DrivePower, YawPower, Updown, Tilt_F, Tilt_B = message
             StrafePower = PowerFunction(StrafePower, self.formula_modifier) #formula modify increase, curve increase
             DrivePower = PowerFunction(DrivePower, self.formula_modifier)
             YawPower = PowerFunction(YawPower, self.formula_modifier)
@@ -69,11 +73,15 @@ class FormulaApply(Module):
             pub.sendMessage('ThrusterBR', power = FinalList[3]*self.max_percentage)
             pub.sendMessage('ThrusterUF', power = DuoList[1]*self.max_percentage)
             pub.sendMessage('ThrusterUB', power = DuoList[0]*self.max_percentage)
+
+
+            #print(DuoList[1]*self.max_percentage)
+            #print(DuoList[0]*self.max_percentage)
+
+
         #print(FinalList[0])
         #print(DrivePower)
 
-    def profileListener(self, profile):
-        self.profile_change = profile #A, B, C, D
 '''
 if __name__ == '__main__':
     gp =Gamepad()

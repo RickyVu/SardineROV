@@ -1,22 +1,129 @@
 import socket
-#import pickle
-#import json
-import threading
+import pickle
 import time
-#from ModuleBase import Module
-#from pubsub import pub
-Format = "utf-8"
-'''
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((socket.gethostname(), 1234))
-s.listen(5)
+from ModuleBase import Module
+from pubsub import pub
 
-while True:
-    clientsocket, address= s.accept()
-    print(f"Connection from {address} has been established")
-    clientsocket.send(bytes("welcome", Format))
+
+class HTTP_Client(Module):
+    def __init__(self, port, simulation=False):
+        pub.subscribe(self.send_listener, "activate")
+        self.s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)        
+        self.port = int(port)      
+        self.connected = False
+        self.connecting = False
+        if type(simulation) == str:
+            self.simulation = eval(simulation)
+        else:
+            self.simulation = simulation
+
+    def connect_reconnect(self):
+        if not self.connected:
+            self.s.setblocking(True)
+            try:
+                self.s.connect(("::1", self.port, 0, 0)) 
+                self.connected = True
+                self.connecting = False
+            except:
+                print("connecting...")
+
+    def recv(self, size = 1024):
+        try:
+            self.s.setblocking(1)
+            self.recv_bytes = self.s.recv(size)
+        except BlockingIOError:
+            pass
+        except OSError:
+            self.connected = False
+
+    def run(self):
+        if not self.connecting:
+            self.connect_reconnect()
+            self.recv()
+            pub.sendMessage("activate", message = True)
+
+        #Recv code here#
+
+    def send_listener(self, message):
+        if self.connected:
+            try:
+                if message == True:
+                    self.s.send(b"activate")
+                else:
+                    self.s.send(b"deactivate")
+                print("sent")
+            except OSError:
+                self.connected = False
+
+
+
+
+
+
+
+
+
+class HTTP_Server(Module):
+    def __init__(self, port, simulation=False):
+        pub.subscribe(self.send_listener, "control-movement")
+        self.s = socket.socket(socket.AF_INET6, socket.SOCK_STREAM)            
+        self.s.bind(("::1", int(port)))
+        self.s.listen()    
+        self.connected = False
+        self.connecting = False
+        self.simulation = simulation
+        self.recv_bytes = b""
+
+    def connect_reconnect(self):
+        if not self.connected:
+            self.s.setblocking(True)
+            self.connecting = True
+            self.clientsocket, self.address= self.s.accept()
+            print(f"Connection from {self.address} has been established")
+            self.connected = True
+            self.connecting = False
+
+    def recv(self, size = 1024):
+        try:
+            self.clientsocket.setblocking(1)
+            self.recv_bytes = self.clientsocket.recv(size)
+            print("recv_bytes in connectors", self.recv_bytes)
+        except BlockingIOError:
+            print("blocking error")
+        except OSError as e:
+            print(e)
+            self.connected = False
+        
+
+    def run(self):
+        if not self.connecting:
+            self.connect_reconnect()
+            self.recv()
+            #Recv code here#
+
+    def send_listener(self, message):
+        if self.connected:
+            try:
+                if message == True:
+                    self.clientsocket.send(pickle.dumps(message))
+                else:
+                    self.clientsocket.send(pickle.dumps(message))
+            except OSError:
+                self.connected = False
+
+
+
+
+
+
+
+
+
+
+
+
 '''
-class HTTP_Handler():
+class HTTP_Server():
     def __init__(self, PORT, IP = socket.gethostname()):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.s.bind((IP, PORT))
@@ -49,19 +156,19 @@ class HTTP_Handler():
 
     def send_disconnect(self):
         try:
-            self.clientsocket.send(bytes("'''disconnect*/", Format))
+            self.clientsocket.send(bytes("/*disconnect*/", Format))
         except:
             pass
 
     def send_stop(self):
         try:
-            self.clientsocket.send(bytes("'''stop*/", Format))
+            self.clientsocket.send(bytes("/*stop*/", Format))
         except:
             pass
 
     def send_continue(self):
         try:
-            self.clientsocket.send(bytes("'''continue*/", Format))
+            self.clientsocket.send(bytes("/*continue*/", Format))
         except:
             pass
 
@@ -71,6 +178,7 @@ class HTTP_Handler():
     def get_data(self):
         return self.data
 '''
+'''
 if __name__ == '__main__':
     handler = HTTP_Handler(1234)
 
@@ -79,7 +187,7 @@ if __name__ == '__main__':
             print(handler.get_data())
         #time.sleep(2)
 '''
-
+'''
 class HTTP_Sender():
     def __init__(self):
         self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -125,18 +233,15 @@ class HTTP_Sender():
             try:
                 msg = self.s.recv(100)
                 self.data = msg.decode("utf-8")
-                if self.data == "'''disconnect*/":
+                if self.data == "/*disconnect*/":
                     self.disconnect()
-                elif self.data == "'''stop*/":
-                    self.stop()
-                elif self.data == "'''continue*/":
+                elif self.data == "/*stop*/":
+                    self.stop = True
+                elif self.data == "/*continue*/":
                     self.continues()
             
             except ConnectionResetError:
-                self._reconnect()
-
-    def stop(self):
-        self.stop = True
+                pass#self._reconnect()
 
     def continues(self):
         self.stop = False
@@ -145,7 +250,7 @@ class HTTP_Sender():
         self.recv_loop = False
         self.connecting = False
         self.s.close()
-
+'''
 '''        
 if __name__ == '__main__':
     Sender = HTTP_Sender()
@@ -158,3 +263,6 @@ if __name__ == '__main__':
         #print(a)
         time.sleep(2)
 '''
+if __name__ == "__main__":
+    client = HTTP_Client(1234)
+    client.start(1000)

@@ -1,7 +1,11 @@
 import numpy as np
 import cv2
+import copy
+import re
 from pubsub import pub
 from ModuleBase import Module
+from PubManager import pub_to_manager
+
 
 Strafe_Deadzone = 30         #coordinate of CV display
 Yaw_Deadzone = 0.2           #Radians
@@ -57,25 +61,44 @@ class line_attr():
         self.top_intersect_x = List[2]
 
 class TransectLine(Module):
-    def __init__(self, drive_power=0.3, strafe_mod=0.5, yaw_mod=0.5, updown_mod=0.99):
+    def __init__(self, drive_power=0.3, strafe_mod=0.5, yaw_mod=0.5, updown_mod=0.99, simulation = False):
         pub.subscribe(self.showListener, 'show_transectline')
+        pub.subscribe(self.activeListener, 'activate_transectline')
+        pub.subscribe(self.simulation_photo_listener, "simulation_photo")
         #self.cap = cv2.VideoCapture(0)
         #ret, frame = self.cap.read()
         self.show = False
         self.drive_power, self.strafe_mod, self.yaw_mod, self.updown_mod = float(drive_power), float(strafe_mod), float(yaw_mod), float(updown_mod)
         self.captureON = False
+        self.active = False
+        self.simulation = simulation
+        self.cap = None
 
-    def showListener(self, show_transectline):
-        self.show = show_transectline
+    def showListener(self, message):
+        self.show = message
+
+    def activeListener(self, message):
+        self.active = message
+
+    def simulation_photo_listener(self, message):
+        self.cap = message
 
     def relative(self, cv_coordinate, self_defined_center):
         return (cv_coordinate[0] - self_defined_center[0], -cv_coordinate[1] + self_defined_center[1])
 
     def run(self):
-        if self.show:
+        if self.active:
+            #pub.sendMessage("transectline", message = [1, 2, 3, 4, 5, 6])
+            #pub_to_manager("transectline", message = [1, 2, 3, 4, 5, 6])
+            #print("active: ",self.active)
+            #print("show: ", self.show)
             if self.captureON == False:
-                self.cap = cv2.VideoCapture(0)
-                self.captureON = True
+                if self.simulation==False:
+                    self.cap = cv2.VideoCapture(0)
+                    self.captureON = True
+
+
+                
                 '''
 
                 cv2.namedWindow('Sliders')
@@ -400,7 +423,6 @@ class TransectLine(Module):
             
             Message = (Strafe_Power,Drive_Power,Yaw_Power,Updown_Power,0,0) #Strafe, drive, yaw, updown, 0, 0
             '''
-            #pub.sendMessage('TransectLine', Message)
            
             if Total_Top > center[0] - Strafe_Deadzone and Total_Top<center[0] + Strafe_Deadzone:
                 Total_Top = width/2
@@ -432,13 +454,17 @@ class TransectLine(Module):
             Yaw_Power = PowerFunction(Yaw_Power, self.yaw_mod)
             Updown_Power = PowerFunction(Updown_Power, self.updown_mod)
 
-            cv2.imshow('frame',frame)
-            cv2.imshow('process', process)
+            if self.show:
+                cv2.imshow('frame',frame)
+                cv2.imshow('process', process)
 
             Powers = [Strafe_Power,Drive_Power,Yaw_Power,Updown_Power,0,0] #Strafe, drive, yaw, updown, 0, 0
             #print(Powers)
-            pub.sendMessage('TransectLine', Message = Powers)
             cv2.waitKey(1)
+            #pub.sendMessage("transectline", message = Powers)
+            #a = [1, 2, 3, 4, 5, 6]
+            #pub_to_manager("control-movement", message = ("transectline", Powers))
+            pub.sendMessage("control-movement", message = ("transectline", Powers))
         else:
             if self.captureON == True:
                 self.cap.release()

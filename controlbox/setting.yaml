@@ -1,0 +1,49 @@
+# -----------------------------------------------------------------------------------
+# Nodes : {NODENAME: MESSAGE} - Store name of nodes and their default values
+# W_Nodes: {(NODENAME, PRIORITY, TIMEOUT, ACCUMULATED_TIME)} - Weight, timeout and time counter of nodes
+# F_Nodes: [NODENAME] - Flicker nodes; auto return to default state in next cycle
+# R_Nodes: [NODENAME] - Rotate nodes; nodes that cycles between a few fixed values
+# Edges: [[NODENAME, NODENAME]] - Store which node is connected to which
+
+# -----------------------------------------------------------------------------------
+# VARIABLES
+
+# Marked with "$" as delimiter
+# for priority:
+#   $HIGH$ = 10
+#   $MEDIUM$ = 100
+#   $LOW$ = 1000
+# for edges:
+#   $ALL$ = A list of all nodes
+# -----------------------------------------------------------------------------------
+
+Graph:
+        Nodes: {activate_controller: True,
+                show_transectline: False,
+                activate_transectline: False,
+                control_invert: False,
+                movement: [0, 0, 0, 0, 0, 0],
+                profile: [[A, B, C, D], 0]}
+
+        W_Nodes:
+                Time_Space: [Control, Utility]
+                Node_Entry: [[Setting, $HIGH$, 0.05, Utility],
+                             [Transect_Line, $MEDIUM$, 0.05, Control],
+                             [Color_Follow, $LOW$, 0.05, Control],
+                             [Photo, $HIGH$, 0.05, Utility],
+                             [Reef, $MEDIUM$, 0.05, Utility],
+                             [Profile, $HIGH$, 0.05, Utility]]
+
+        F_Nodes: []
+
+        C_Nodes: [profile, ]
+
+        R_Nodes: [movement]
+
+        A_Nodes: [activate_controller, ]
+
+        Edges: [[show_transectline,activate_transectline],
+                [movement, $ALL$],
+                [profile, $ALL$],
+                [control_invert, $ALL$]]
+   
