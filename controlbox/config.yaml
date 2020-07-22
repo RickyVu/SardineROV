@@ -1,7 +1,7 @@
 Gamepad:
     file: Gamepad_Normalize 
     varclass: Gamepad
-    frequency: 100000
+    frequency: 10000
 # TransectLine:
 #    file: CV_TransectLine3
 #    varclass: TransectLine
@@ -11,30 +11,30 @@ Gamepad:
 #    yaw_mod: 0.5
 #    updown_mod: 0.99
 ProfileA:
-    file: thrusterProfile_Inv
+    file: Thruster_Profile
     varclass: FormulaApply
-    frequency: 10
+    frequency: 1
     activate: 'A'
     max_percentage: 100
     formula_modifier: 30            # Higher -> lower curve
 ProfileB:
     file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 10
+    frequency: 1
     activate: 'B'
     max_percentage: 70
     formula_modifier: 50
 ProfileC:
     file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 10
+    frequency: 1
     activate: 'C'
     max_percentage: 30
     formula_modifier: 70
 ProfileD:
     file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 10
+    frequency: 1
     activate: 'D'
     max_percentage: 100
     formula_modifier: 100    
@@ -42,49 +42,49 @@ ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFL
-    address: 0x017
-    invert: True
-    frequency: 5000
+    address: 0x016
+    invert: False
+    frequency: 10
 ThrusterFR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFR
-    address: 0x015
-    invert: True
-    frequency: 5000
+    address: 0x01C
+    invert: False
+    frequency: 10
 ThrusterBL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBL
-    address: 0x018
-    invert: True
-    frequency: 5000
+    address: 0x017
+    invert: False
+    frequency: 10
 ThrusterBR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBR
-    address: 0x01B
+    address: 0x018
     invert: False
-    frequency: 5000
+    frequency: 10
 ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
-    address: 0x016
-    invert: True
-    frequency: 5000
+    address: 0x01F
+    invert: False
+    frequency: 10
 ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUB
-    address: 0x01A
+    address: 0x01D
     invert: True
-    frequency: 5000
+    frequency: 10
 DualPlexer:
     file: Movement_Multiplexer
     varclass: Dualplexer
     timeout: 0
-    frequency: 1000
+    frequency: 120
 # HTTPHandler:
 #    file: HTTP_Handler
 #    varclass: HTTP_Client
@@ -106,10 +106,10 @@ GUI:
     varclass: GUI
     screen_width: 500
     screen_height: 500
-    frequency: 10000
-# CAN_Handler:
-#     file: CAN_Handler
-#     varclass: CAN_Handler
-#     frequency: 10
+    frequency: 100
+CAN_Handler:
+    file: CAN_Handler
+    varclass: CAN_Handler
+    frequency: 10
 
 

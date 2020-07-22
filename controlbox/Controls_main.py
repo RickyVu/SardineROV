@@ -1,13 +1,21 @@
 from ModuleLoader import Loader
+import sys
 #from GUI_Widget import ThrusterWidget
 #from CAN_Handler import CAN_Handler
 #from Thruster_Message import Thruster
 #import pygame
-'''
-Handler = CAN_Handler()
-Handler.start(100)
-'''
-Loader.load_all('config.yaml')
+
+config_name = 'config.yaml'
+
+if len(sys.argv) > 1:
+    config_name = sys.argv[1]
+nodes = Loader.load_all(config_name)
+
+for n in nodes:
+    #print("starting...", n["node"], n["frequency"])
+    n["node"].start(n["frequency"])
+
+
 #Loader.load_gui('config.yaml', 600, 500)
 
 #usable sample alternatives

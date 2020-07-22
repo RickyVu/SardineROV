@@ -63,6 +63,7 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
             print('File not found')
 
     def load_all(YAML_File):
+        nodes = []
         try:
             content = yaml.load(open(str(YAML_File), 'r'), Loader = yaml.FullLoader)
             frequency = 1
@@ -95,12 +96,13 @@ class Loader():  #  30,   FL, Thruster_Message, Thruster, 0x011, True
 
                 #Execute one node
                 exec(f"from {file} import {varclass}") 
-                exec(f"{nodeName} = {varclass}({args})")
-                exec(f"{nodeName}.start({frequency})")
+                _node = eval(varclass +"(" + args +")")
+                nodes.append( { "node": _node, "clazz": varclass, "frequency": frequency, "args": args} )
                 print(f"{nodeName} successfully loaded")
-
+                # exec(f"{nodeName}.start({frequency})")
         except FileNotFoundError:
             print('File not found')
+        return nodes
 
     def load_gui(YAML_file, screen_width, screen_height):
         import pygame

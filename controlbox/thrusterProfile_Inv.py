@@ -77,8 +77,9 @@ class FormulaApply(Module):
 
             Tinv = np.linalg.pinv(T)
             finalList = Tinv.dot(exResult)
-            #print(finalList)
 
+            #print(finalList[4])
+            #print(finalList)
             pub.sendMessage('ThrusterFL', power = finalList[0][0]*self.max_percentage)
             pub.sendMessage('ThrusterFR', power = finalList[1][0]*self.max_percentage)
             pub.sendMessage('ThrusterBL', power = finalList[2][0]*self.max_percentage)

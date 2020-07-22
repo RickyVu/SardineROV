@@ -2,7 +2,7 @@
 DeadZone_ThresholdL = 0.08
 DeadZone_ThresholdR = 0.1
 Normalize_Constant = 32768
-Normalize_Constant_Z = 256
+Normalize_Constant_Z = 1024
 Directional_BTN = {"BTN_NORTH", "BTN_WEST", "BTN_SOUTH", "BTN_EAST"}
 #BTN_TL, BTN_TR {0, 1}
 
@@ -108,12 +108,13 @@ class Gamepad(Module):
                     self.tilt_front = normalize(event.state, Normalize_Constant_Z)
 
                 if self.control_invert == False:
-                    self.movement_message = (self.strafe, self.drive, self.yaw, self.updown, self.tilt_front, self.tilt_back)
+                    self.movement_message = (-self.strafe, self.drive, self.yaw, self.updown, self.tilt_front, self.tilt_back)
                 else:
-                    self.movement_message = (-self.strafe, -self.drive, -self.yaw, self.updown, -self.tilt_front, -self.tilt_back)
+                    self.movement_message = (self.strafe, -self.drive, -self.yaw, self.updown, -self.tilt_front, -self.tilt_back)
                 #print("Normalize", self.movement_message)
                 #pub_to_manager('movement', message = self.movement_message)
                 pub.sendMessage("control-movement", message = ("gamepad", self.movement_message))
+                #print(self.movement_message)
 
             hatcode = event.code[0:8]
             controlcode = event.code
