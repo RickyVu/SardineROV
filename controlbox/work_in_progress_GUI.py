@@ -108,16 +108,16 @@ class StatusWidget(Widget):
         self.font_size = 12
         pub.subscribe(self._control_listener, 'control_invert')
         pub.subscribe(self._profile_listener, 'profile')
-        pub.subscribe(self._transect_listener, 'show_transectline')
+        pub.subscribe(self._transect_listener, 'activate_transectline')
 
-    def _control_listener(self, arg):
-        self.control_invert = str(arg)
+    def _control_listener(self, message):
+        self.control_invert = str(message)
 
-    def _profile_listener(self, arg):
-        self.profile = str(arg)
+    def _profile_listener(self, message):
+        self.profile = str(message)
 
-    def _transect_listener(self, arg):
-        self.show_transectline= str(arg)
+    def _transect_listener(self, message):
+        self.show_transectline= str(message)
         
     def _control_invert(self):
         self.ctrl_inv_Surface.fill((0,0,0))
@@ -183,10 +183,10 @@ class ThrusterWidget(Widget):
         self.theta2 = 3*math.pi/4
         self.center = (round(self.gauge_Surface_dim[0]/2), round(self.gauge_Surface_dim[1]/2))
         self.font_size = 12
-        pub.subscribe(self._power_listener,thruster_name)
+        pub.subscribe(self._power_listener,thruster_name+"_Widget")
 
-    def _power_listener(self, power):
-        self.power = power
+    def _power_listener(self, output):
+        self.power = output
         
     def _thruster_gauge(self):
         self.gauge_Surface.fill((0, 0, 0))

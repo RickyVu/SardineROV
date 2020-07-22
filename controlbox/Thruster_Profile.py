@@ -58,7 +58,7 @@ class FormulaApply(Module):
         #print("movementlistener: ", message)
         if self.profile_change == self.activate:
             StrafePower, DrivePower, YawPower, Updown, Tilt_F, Tilt_B = message
-            StrafePower = PowerFunction(StrafePower, self.formula_modifier) #formula modify increase, curve increase
+            StrafePower = PowerFunction(StrafePower, self.formula_modifier) #formula modify increase, lower curve
             DrivePower = PowerFunction(DrivePower, self.formula_modifier)
             YawPower = PowerFunction(YawPower, self.formula_modifier)
             UpdownPower = PowerFunction(Updown, self.formula_modifier)

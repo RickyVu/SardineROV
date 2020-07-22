@@ -120,6 +120,7 @@ class Gamepad(Module):
 
             if controlcode == 'BTN_TL' and event.state != 0:
                 self.control_invert = not self.control_invert
+                pub.sendMessage("control_invert", message = self.control_invert) #For GUI
                 #pub_to_manager('control_invert')
 
             if controlcode == 'BTN_TR' and event.state != 0:

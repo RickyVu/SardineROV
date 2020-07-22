@@ -1,91 +1,112 @@
 Gamepad:
     file: Gamepad_Normalize 
     varclass: Gamepad
-    frequency: 1000000
-TransectLine:
-    file: CV_TransectLine3
-    varclass: TransectLine
-    frequency: 100
-    drive_power: 0.3
-    strafe_mod: 0.5
-    yaw_mod: 0.5
-    updown_mod: 0.99
+    frequency: 100000
+# TransectLine:
+#    file: CV_TransectLine3
+#    varclass: TransectLine
+#    frequency: 1000
+#    drive_power: 0.3
+#    strafe_mod: 0.5
+#    yaw_mod: 0.5
+#    updown_mod: 0.99
 ProfileA:
-    file: Thruster_Profile
+    file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 100
+    frequency: 10
     activate: 'A'
     max_percentage: 100
-    formula_modifier: 30
+    formula_modifier: 30            # Higher -> lower curve
 ProfileB:
-    file: Thruster_Profile
+    file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 100
+    frequency: 10
     activate: 'B'
     max_percentage: 70
-    formula_modifier: 30
+    formula_modifier: 50
 ProfileC:
-    file: Thruster_Profile
+    file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 100
+    frequency: 10
     activate: 'C'
     max_percentage: 30
-    formula_modifier: 30
+    formula_modifier: 70
 ProfileD:
-    file: Thruster_Profile
+    file: thrusterProfile_Inv
     varclass: FormulaApply
-    frequency: 100
+    frequency: 10
     activate: 'D'
     max_percentage: 100
-    formula_modifier: 0.1    
+    formula_modifier: 100    
 ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFL
     address: 0x017
     invert: True
-    frequency: 10
+    frequency: 5000
 ThrusterFR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFR
     address: 0x015
     invert: True
-    frequency: 10
+    frequency: 5000
 ThrusterBL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBL
     address: 0x018
     invert: True
-    frequency: 10
+    frequency: 5000
 ThrusterBR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBR
     address: 0x01B
     invert: False
-    frequency: 10
+    frequency: 5000
 ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
     address: 0x016
     invert: True
-    frequency: 10
+    frequency: 5000
 ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUB
     address: 0x01A
     invert: True
-    frequency: 10
+    frequency: 5000
+DualPlexer:
+    file: Movement_Multiplexer
+    varclass: Dualplexer
+    timeout: 0
+    frequency: 1000
+# HTTPHandler:
+#    file: HTTP_Handler
+#    varclass: HTTP_Client
+#    port: 1234
+#    simulation: False
+#    frequency: 10000
+
+
+# Logger:
+#    file: Debug_log
+#    varclass: Logger
+#    log_file: C:/Users/user/Desktop/SardineROV-master/controlbox/log.csv
+#    frequency: 10
+# Simulation:
+    # file: Simulation_link
+    # varclass: Simulation
 GUI:
     file: work_in_progress_GUI
     varclass: GUI
     screen_width: 500
     screen_height: 500
-    frequency: 60
+    frequency: 10000
 # CAN_Handler:
 #     file: CAN_Handler
 #     varclass: CAN_Handler

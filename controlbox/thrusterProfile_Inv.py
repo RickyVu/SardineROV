@@ -79,12 +79,12 @@ class FormulaApply(Module):
             finalList = Tinv.dot(exResult)
             #print(finalList)
 
-            pub.sendMessage('ThrusterFL', power = finalList[0]*self.max_percentage)
-            pub.sendMessage('ThrusterFR', power = finalList[1]*self.max_percentage)
-            pub.sendMessage('ThrusterBL', power = finalList[2]*self.max_percentage)
-            pub.sendMessage('ThrusterBR', power = finalList[3]*self.max_percentage)
-            pub.sendMessage('ThrusterTF', power = finalList[4]*self.max_percentage)
-            pub.sendMessage('ThrusterTB', power = finalList[5]*self.max_percentage)
+            pub.sendMessage('ThrusterFL', power = finalList[0][0]*self.max_percentage)
+            pub.sendMessage('ThrusterFR', power = finalList[1][0]*self.max_percentage)
+            pub.sendMessage('ThrusterBL', power = finalList[2][0]*self.max_percentage)
+            pub.sendMessage('ThrusterBR', power = finalList[3][0]*self.max_percentage)
+            pub.sendMessage('ThrusterUF', power = finalList[4][0]*self.max_percentage)
+            pub.sendMessage('ThrusterUB', power = finalList[5][0]*self.max_percentage)
 
     def profileListener(self, message):
         self.profile_change = message #A, B, C, D

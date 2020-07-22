@@ -32,10 +32,12 @@ class Dualplexer(Module):
             if not self.active_dict[sender]:
                 self.active_dict["gamepad"] = True
 
-            self.can_change = False
+            self.can_change = True
+
                 
         for node, value in self.active_dict.items():
             pub.sendMessage("activate_"+node, message = value)
+
         
 
     #receive tuple(sender<string>, tuple <6 int> )
