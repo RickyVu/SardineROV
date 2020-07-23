@@ -1,7 +1,7 @@
 Gamepad:
     file: Gamepad_Normalize 
     varclass: Gamepad
-    frequency: 10000
+    frequency: 240
 # TransectLine:
 #    file: CV_TransectLine3
 #    varclass: TransectLine
@@ -11,7 +11,7 @@ Gamepad:
 #    yaw_mod: 0.5
 #    updown_mod: 0.99
 ProfileA:
-    file: Thruster_Profile
+    file: thrusterProfile_Inv
     varclass: FormulaApply
     frequency: 1
     activate: 'A'
@@ -70,7 +70,7 @@ ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
-    address: 0x01F
+    address: 0x015
     invert: False
     frequency: 10
 ThrusterUB:

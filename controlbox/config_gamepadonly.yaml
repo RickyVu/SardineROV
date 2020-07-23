@@ -1,0 +1,16 @@
+Gamepad:
+    file: Gamepad_Normalize 
+    varclass: Gamepad
+    frequency: 120
+CAN:
+    file: CAN_Handler
+    varclass: CAN_Handler
+    frequency: 1
+# TransectLine:
+#    file: CV_TransectLine3
+#    varclass: TransectLine
+#    frequency: 1000
+#    drive_power: 0.3
+#    strafe_mod: 0.5
+#    yaw_mod: 0.5
+#    updown_mod: 0.99

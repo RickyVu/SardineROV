@@ -1,0 +1,43 @@
+Gamepad:
+    file: Gamepad_Normalize 
+    varclass: Gamepad
+    frequency: 100000
+ThrusterBL:
+    file: Thruster_Message
+    varclass: Thruster
+    name: ThrusterBL
+    address: 0x017
+    invert: False
+    frequency: 10
+ThrusterBR:
+    file: Thruster_Message
+    varclass: Thruster
+    name: ThrusterBR
+    address: 0x018
+    invert: False
+    frequency: 10
+ThrusterUF:
+    file: Thruster_Message
+    varclass: Thruster
+    name: ThrusterUF
+    address: 0x01E
+    invert: False
+    frequency: 10
+ThrusterUB:
+    file: Thruster_Message
+    varclass: Thruster
+    name: ThrusterUB
+    address: 0x01D
+    invert: True
+    frequency: 10
+DualPlexer:
+    file: Movement_Multiplexer
+    varclass: Dualplexer
+    timeout: 0
+    frequency: 10
+CAN_Handler:
+    file: CAN_Handler
+    varclass: CAN_Handler
+    frequency: 10
+
+
