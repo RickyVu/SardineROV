@@ -70,15 +70,15 @@ ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
-    address: 0x015
-    invert: False
+    address: 0x019
+    invert: True
     frequency: 10
 ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUB
-    address: 0x01D
-    invert: True
+    address: 0x014
+    invert: False
     frequency: 10
 DualPlexer:
     file: Movement_Multiplexer

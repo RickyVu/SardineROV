@@ -110,7 +110,7 @@ class Gamepad(Module):
                 if self.control_invert == False:
                     self.movement_message = (-self.strafe, self.drive, self.yaw, self.updown, self.tilt_front, self.tilt_back)
                 else:
-                    self.movement_message = (self.strafe, -self.drive, -self.yaw, self.updown, -self.tilt_front, -self.tilt_back)
+                    self.movement_message = (self.strafe, -self.drive, self.yaw, self.updown, -self.tilt_front, -self.tilt_back)
                 #print("Normalize", self.movement_message)
                 #pub_to_manager('movement', message = self.movement_message)
                 pub.sendMessage("control-movement", message = ("gamepad", self.movement_message))
