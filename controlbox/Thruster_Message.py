@@ -13,7 +13,7 @@ class Thruster(Module):
         self.output_power = 0
 
     def run(self): #calculate rate, save in pub_data, then pub it
-        rate = 0.5 * self.interval
+        rate = 1.3 * self.interval
         #rate = (self.target_power - self.current_power)*self.interval
         #if abs(rate)>self.max_rate:
         #    rate = (rate/abs(rate)) * self.max_rate
