@@ -9,8 +9,8 @@ import math
 #constants
 sin = math.sin(math.radians(45))
 CG = np.array((0, 0, 0))
-horizontalDist = [sin,sin,0] # FR x,y,z unit:m
-verticalDist = [0,1,1] # TF x,y,z unit:m
+horizontalDist = [0.168,0.176,0] # FR x,y,z unit:m
+verticalDist = [0,0.182,0.97] # TF x,y,z unit:m
 
 FLposition = np.array((-horizontalDist[0], horizontalDist[1], horizontalDist[2]))
 FRposition = np.array((horizontalDist[0], horizontalDist[1], horizontalDist[2])) # position x,y,z
