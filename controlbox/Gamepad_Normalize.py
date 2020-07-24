@@ -2,14 +2,18 @@
 DeadZone_ThresholdL = 0.08
 DeadZone_ThresholdR = 0.1
 Normalize_Constant = 32768
-Normalize_Constant_Z = 1024
+Normalize_Constant_Z = 256
 Directional_BTN = {"BTN_NORTH", "BTN_WEST", "BTN_SOUTH", "BTN_EAST"}
 #BTN_TL, BTN_TR {0, 1}
 
 ProfileDict = {'ABS_HAT0Y-1': 'A',
                'ABS_HAT0X-1': 'B',
                'ABS_HAT0X1': 'C',
-               'ABS_HAT0Y1': 'D'}
+               'ABS_HAT0Y1': 'D',
+               'BTN_THUMB0': 'A',
+               'BTN_THUMB1': 'B',
+               'BTN_THUMB2': 'C',
+               'BTN_THUMB3': 'D'}
 
 # variables
 previous_message = (2, 2, 2, 2, 2, 2)
@@ -41,6 +45,16 @@ def deadzoneright(X):
     else:
         return X
 
+def half_movement_value_join(negative_value, positive_value):
+    return negative_value+positive_value
+
+def half_movement_value_split(full_value):
+    if full_value>=0:
+        return 0, full_value
+    else:
+        return full_value, 0
+
+
 class Gamepad(Module):
     def __init__(self):
         #pub.subscribe(self.south_listener, 'transectline')
@@ -48,6 +62,9 @@ class Gamepad(Module):
         self.drive = 0
         self.strafe = 0
         self.yaw = 0
+        self.tilt = 0
+        self.updown1 = 0
+        self.updown2 = 0
         self.updown = 0
         self.tilt_front = 0
         self.tilt_back = 0
@@ -55,6 +72,7 @@ class Gamepad(Module):
         self.movement_message = (0,0,0,0,0,0)
         self.active = True #[True, False, False]  #Analog, South, West
         self.show_transectline = False
+        self.thumb_profile_cycle = 0
         #self.handler = HTTP_Handler(1234)
         #self.HTTP_thread = threading.Thread(target = self.HTTP_listener)
         #self.http_thread_start = True
@@ -73,6 +91,8 @@ class Gamepad(Module):
 
     def active_listener(self, message):
         self.active = message
+        self.movement_message = (0, 0, 0, 0, 0, 0)
+        pub.sendMessage("control-movement", message = ("controller", (0, 0, 0, 0, 0, 0)))
 
     '''
     def HTTP_listener(self):
@@ -101,64 +121,75 @@ class Gamepad(Module):
                 elif (analogcode == "ABS_RX"):
                     self.yaw = deadzoneright(normalize(event.state))
                 elif (analogcode == "ABS_RY"):
-                    self.updown = deadzoneright(normalize(event.state))             
-                elif (analogcode == "ABS_Z"):
-                    self.tilt_back = (-1)*normalize(event.state, Normalize_Constant_Z)
-                elif (analogcode == "ABS_RZ"):
-                    self.tilt_front = normalize(event.state, Normalize_Constant_Z)
+                    self.tilt = (deadzoneright(normalize(event.state)))
+                    #print(self.tilt)      
+                if (analogcode == "ABS_Z"):
+                    self.updown1 =  (-1)*normalize(event.state, Normalize_Constant_Z)
+                if (analogcode == "ABS_RZ"):
+                    self.updown2 = normalize(event.state, Normalize_Constant_Z)
 
-                if self.control_invert == False:
-                    self.movement_message = (-self.strafe, self.drive, self.yaw, self.updown, self.tilt_front, self.tilt_back)
+                self.updown = half_movement_value_join(self.updown1, self.updown2)
+     
+
+                if self.control_invert == False:#tfront, tback
+                    self.movement_message = (-self.strafe, self.drive, self.yaw, self.updown, self.tilt, self.tilt)
                 else:
-                    self.movement_message = (self.strafe, -self.drive, self.yaw, self.updown, -self.tilt_front, -self.tilt_back)
-                #print("Normalize", self.movement_message)
+                    self.movement_message = (self.strafe, -self.drive, -self.yaw,  self.updown, -self.tilt, -self.tilt)
                 #pub_to_manager('movement', message = self.movement_message)
-                pub.sendMessage("control-movement", message = ("gamepad", self.movement_message))
-                #print(self.movement_message)
+                pub.sendMessage("control-movement", message = ("controller", self.movement_message))
 
-            hatcode = event.code[0:8]
-            controlcode = event.code
+        hatcode = event.code[0:8]
+        controlcode = event.code
+        if controlcode == "BTN_THUMBR" and event.state!=0:
+            self.thumb_profile_cycle = (self.thumb_profile_cycle-1)%4
+            pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
-            if controlcode == 'BTN_TL' and event.state != 0:
-                self.control_invert = not self.control_invert
-                pub.sendMessage("control_invert", message = self.control_invert) #For GUI
-                #pub_to_manager('control_invert')
+        if controlcode == "BTN_THUMBL" and event.state!=0:
+            self.thumb_profile_cycle = (self.thumb_profile_cycle+1)%4
+            pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
-            if controlcode == 'BTN_TR' and event.state != 0:
-                pass #EM
-            
-            if (hatcode == "ABS_HAT0") and (event.state != 0):
-                #pub_to_manager('profile', message = ProfileDict[str(event.code)+str(event.state)])
-                pub.sendMessage("profile", message = ProfileDict[str(event.code)+str(event.state)])
+        if controlcode == 'BTN_TL' and event.state != 0:
+            pass #EM
 
-            if (controlcode == "BTN_SOUTH") and (event.state == 1):
-                #pub_to_manager('activate_transectline')
-                #pub_to_manager('show_transectline')
-                pub.sendMessage("movement_activation", sender = "transectline")
-                pub.sendMessage("show_transectline", message = not self.show_transectline)
+        if controlcode == 'BTN_TR' and event.state != 0:
+            pass #EM
+        
+        if (hatcode == "ABS_HAT0") and (event.state != 0):
+            #pub_to_manager('profile', message = ProfileDict[str(event.code)+str(event.state)])
+            pub.sendMessage("profile", message = ProfileDict[str(event.code)+str(event.state)])
 
-            if (controlcode == "BTN_WEST") and (event.state == 1):
-                #pub_to_manager('activate_transectline')
-                #pub_to_manager('show_transectline')
-                pub.sendMessage("movement_activation", sender = "something")
-                #pub.sendMessage("show_transectline", message = not self.show_transectline)
+        if (controlcode == "BTN_SOUTH") and (event.state == 1):
+            #pub_to_manager('activate_transectline')
+            #pub_to_manager('show_transectline')
+            pub.sendMessage("movement_activation", sender = "transectline")
+            pub.sendMessage("show_transectline", message = not self.show_transectline)
+
+        if (controlcode == "BTN_WEST") and (event.state == 1):
+            self.control_invert = not self.control_invert
+            pub.sendMessage("control_invert", message = self.control_invert) #For GUI
+            #pub_to_manager('control_invert')
+
+            #pub_to_manager('activate_transectline')
+            #pub_to_manager('show_transectline')
+            #pub.sendMessage("movement_activation", sender = "something")
+            #pub.sendMessage("show_transectline", message = not self.show_transectline)
 
 
-            '''
-            if (controlcode== "BTN_WEST") and (event.state ==1):
-                self.active[2] = not self.active[2]
-                if self.active[2] == True:
-                    self.handler.send_continue()
-                else:
-                    self.handler.send_stop()
-                    #self.handler.disconnect()               
-            
-            if (controlcode in Directional_BTN) and (event.state == 1):
-                if self.active[0] == False:
-                    self.active[0] = True
-                    for i in range(1, len(self.active)):
-                        self.active[i] = False
-                else:
-                     self.active[0] = False'''
+        '''
+        if (controlcode== "BTN_WEST") and (event.state ==1):
+            self.active[2] = not self.active[2]
+            if self.active[2] == True:
+                self.handler.send_continue()
+            else:
+                self.handler.send_stop()
+                #self.handler.disconnect()               
+        
+        if (controlcode in Directional_BTN) and (event.state == 1):
+            if self.active[0] == False:
+                self.active[0] = True
+                for i in range(1, len(self.active)):
+                    self.active[i] = False
+            else:
+                    self.active[0] = False'''
 
-                    
+                
