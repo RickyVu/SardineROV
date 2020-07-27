@@ -28,6 +28,7 @@ class Thruster(Module):
         else:
             self.output_power = self.current_power
 
+
         #Set to range of -32768 to 32767
         if self.output_power>=0:
             self.output_power= int(self.output_power*32767)
@@ -35,9 +36,13 @@ class Thruster(Module):
             self.output_power= int(self.output_power*32768)
 
         if self.invert == "True":
-            pub_data= (self.address, -1*self.output_power)
-        else:
-            pub_data= (self.address, self.output_power)
+            self.output_power *= -1
+
+        #if self.output_power>0:
+        #    self.output_power = self.output_power * 0.45
+
+        pub_data= (self.address, int(self.output_power))
+
 
         # pub_data = (self.address, int(self.target_power * 32767))
 

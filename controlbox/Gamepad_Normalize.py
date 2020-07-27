@@ -2,7 +2,7 @@
 DeadZone_ThresholdL = 0.08
 DeadZone_ThresholdR = 0.1
 Normalize_Constant = 32768
-Normalize_Constant_Z = 256
+Normalize_Constant_Z = 1024
 Directional_BTN = {"BTN_NORTH", "BTN_WEST", "BTN_SOUTH", "BTN_EAST"}
 #BTN_TL, BTN_TR {0, 1}
 
@@ -132,20 +132,20 @@ class Gamepad(Module):
      
 
                 if self.control_invert == False:#tfront, tback
-                    self.movement_message = (-self.strafe, self.drive, self.yaw, self.updown, self.tilt, self.tilt)
+                    self.movement_message = (-self.strafe, self.drive, self.yaw, -self.updown, self.tilt, self.tilt)
                 else:
-                    self.movement_message = (self.strafe, -self.drive, -self.yaw,  self.updown, -self.tilt, -self.tilt)
+                    self.movement_message = (self.strafe, -self.drive, self.yaw,  -self.updown, -self.tilt, -self.tilt)
                 #pub_to_manager('movement', message = self.movement_message)
                 pub.sendMessage("control-movement", message = ("controller", self.movement_message))
 
         hatcode = event.code[0:8]
         controlcode = event.code
         if controlcode == "BTN_THUMBR" and event.state!=0:
-            self.thumb_profile_cycle = (self.thumb_profile_cycle-1)%4
+            self.thumb_profile_cycle = (self.thumb_profile_cycle+1)%4
             pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
         if controlcode == "BTN_THUMBL" and event.state!=0:
-            self.thumb_profile_cycle = (self.thumb_profile_cycle+1)%4
+            self.thumb_profile_cycle = (self.thumb_profile_cycle-1)%4
             pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
         if controlcode == 'BTN_TL' and event.state != 0:

@@ -70,7 +70,7 @@ ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
-    address: 0x019
+    address: 0x013
     invert: True
     frequency: 10
 ThrusterUB:
