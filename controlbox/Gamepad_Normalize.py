@@ -2,7 +2,7 @@
 DeadZone_ThresholdL = 0.08
 DeadZone_ThresholdR = 0.1
 Normalize_Constant = 32768
-Normalize_Constant_Z = 256
+Normalize_Constant_Z = 1024
 Directional_BTN = {"BTN_NORTH", "BTN_WEST", "BTN_SOUTH", "BTN_EAST"}
 #BTN_TL, BTN_TR {0, 1}
 
@@ -132,9 +132,9 @@ class Gamepad(Module):
      
 
                 if self.control_invert == False:#tfront, tback
-                    self.movement_message = (-self.strafe, self.drive, self.yaw, self.updown, self.tilt, self.tilt)
+                    self.movement_message = (-self.strafe, self.drive, self.yaw/1.3, -self.updown, self.tilt, 0)
                 else:
-                    self.movement_message = (self.strafe, -self.drive, -self.yaw,  self.updown, -self.tilt, -self.tilt)
+                    self.movement_message = (self.strafe, -self.drive, self.yaw/1.3, -self.updown, -self.tilt, 0)
                 #pub_to_manager('movement', message = self.movement_message)
                 pub.sendMessage("control-movement", message = ("controller", self.movement_message))
 
@@ -192,4 +192,9 @@ class Gamepad(Module):
             else:
                     self.active[0] = False'''
 
-                
+'''                
+if __name__ == "__main__":
+    def controller_listener(message):
+        print(message)
+    pub.subscribe(controller_listener,"controller-movement")
+'''

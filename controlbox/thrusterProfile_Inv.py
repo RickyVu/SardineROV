@@ -67,7 +67,7 @@ class FormulaApply(Module):
             StrafePower = PowerFunction(StrafePower, self.formula_modifier)
             DrivePower = PowerFunction(DrivePower, self.formula_modifier)
             YawPower = PowerFunction(YawPower, self.formula_modifier)
-            UpdownPower = PowerFunction(Updown, self.formula_modifier)
+            UpdownPower = PowerFunction(Updown, self.formula_modifier)/1.5
             Tilt_FB = (Tilt_F + Tilt_B)/2
             Tilt_FB = PowerFunction(Tilt_FB, self.formula_modifier)
             Tilt_LR = 0

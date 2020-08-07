@@ -29,15 +29,15 @@ ProfileC:
     varclass: FormulaApply
     frequency: 1
     activate: 'C'
-    max_percentage: 30
-    formula_modifier: 70
+    max_percentage: 50
+    formula_modifier: 50
 ProfileD:
     file: thrusterProfile_Inv
     varclass: FormulaApply
     frequency: 1
     activate: 'D'
-    max_percentage: 100
-    formula_modifier: 100    
+    max_percentage: 30
+    formula_modifier: 50    
 ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
@@ -70,14 +70,14 @@ ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
-    address: 0x019
+    address: 0x015
     invert: True
     frequency: 10
 ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUB
-    address: 0x014
+    address: 0x01D
     invert: False
     frequency: 10
 DualPlexer:
