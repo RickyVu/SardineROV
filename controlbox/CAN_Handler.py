@@ -7,11 +7,34 @@ class CAN_Handler(Module):
     def __init__(self):
         self.bus = can.interface.Bus(bustype = "socketcan", channel = "can0", bitrate = 250000)
         pub.subscribe(self.MessageListener, 'Thruster Power Output')
+        pub.subscribe(self.EM_TL_Listener, "EM_TL")
+        pub.subscribe(self.EM_TR_Listener, "EM_TR")
         #pub.subscribe(self.InputListener, 'control-movement')
 
     def InputListener(self, message):
         pass
         #print(message)
+
+    def EM_TL_Listener(self, message):
+        if message == 1:
+            msg = can.Message(arbitration_id = 0x30, data = [48, 16])
+        else:
+            msg = can.Message(arbitration_id = 0x30, data = [48,0])
+
+        try:
+            self.bus.send(msg)
+        except can.CanError:
+            print("message not sent")
+    def EM_TR_Listener(self, message):
+        if message = 1:
+            msg = can.Message(arbitration_id = 0x30, data = [49,16])
+        else:
+            msg = can.Message(arbitration_id = 0x30, data = [49,0])
+
+        try:
+            self.bus.send(msg)
+        except can.CanError:
+            print("message not sent")
 
     def MessageListener(self, pub):
         #print(pub[0])
@@ -28,7 +51,7 @@ class CAN_Handler(Module):
             #print("Message sent on {}".format(self.bus.channel_info))
         except can.CanError:
             print("Message NOT sent")
-    
+
     def run(self):
         message = self.bus.recv(1)
 #        print(message)

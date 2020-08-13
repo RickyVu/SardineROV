@@ -73,6 +73,8 @@ class Gamepad(Module):
         self.active = True #[True, False, False]  #Analog, South, West
         self.show_transectline = False
         self.thumb_profile_cycle = 0
+        self.EM_TL = 0
+        self.EM_TR = 0
         #self.handler = HTTP_Handler(1234)
         #self.HTTP_thread = threading.Thread(target = self.HTTP_listener)
         #self.http_thread_start = True
@@ -149,10 +151,12 @@ class Gamepad(Module):
             pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
         if controlcode == 'BTN_TL' and event.state != 0:
-            pass #EM
+            self.EM_TL += event.state
+            pub.sendMessage("EM_TL", message = self.EM_TR%2)
 
         if controlcode == 'BTN_TR' and event.state != 0:
-            pass #EM
+            self.EM_TR += event.state
+            pub.sendMessage("EM_TR" message = self.EM_TL%2)
 
         if (hatcode == "ABS_HAT0") and (event.state != 0):
             #pub_to_manager('profile', message = ProfileDict[str(event.code)+str(event.state)])
