@@ -42,7 +42,7 @@ ThrusterFL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterFL
-    address: 0x016
+    address: 0x018
     invert: False
     frequency: 10
 ThrusterFR:
@@ -56,29 +56,29 @@ ThrusterBL:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBL
-    address: 0x017
+    address: 0x016
     invert: False
     frequency: 10
 ThrusterBR:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterBR
-    address: 0x018
+    address: 0x013
     invert: False
     frequency: 10
 ThrusterUF:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUF
-    address: 0x015
-    invert: True
+    address: 0x014
+    invert: False
     frequency: 10
 ThrusterUB:
     file: Thruster_Message
     varclass: Thruster
     name: ThrusterUB
-    address: 0x01D
-    invert: False
+    address: 0x019
+    invert: True
     frequency: 10
 DualPlexer:
     file: Movement_Multiplexer
