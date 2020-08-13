@@ -152,10 +152,12 @@ class Gamepad(Module):
 
         if controlcode == 'BTN_TL' and event.state != 0:
             self.EM_TL += event.state
+            print(self.EM_TL%2)
             pub.sendMessage("EM_TL", message = self.EM_TR%2)
 
         if controlcode == 'BTN_TR' and event.state != 0:
             self.EM_TR += event.state
+            print(self.EM_TR%2)
             pub.sendMessage("EM_TR", message = self.EM_TL%2)
 
         if (hatcode == "ABS_HAT0") and (event.state != 0):

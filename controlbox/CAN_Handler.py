@@ -17,10 +17,10 @@ class CAN_Handler(Module):
 
     def EM_TL_Listener(self, message):
         if message == 1:
-            msg = can.Message(arbitration_id = 0x30, data = [48, 16])
+            msg = can.Message(arbitration_id = 0x30, data = [48, 16], is_extended_id = False)
             print("Left EM on")
         else:
-            msg = can.Message(arbitration_id = 0x30, data = [48,0])
+            msg = can.Message(arbitration_id = 0x30, data = [48,0], is_extended_id = False)
             print("Left EM off")
 
         try:
@@ -29,10 +29,10 @@ class CAN_Handler(Module):
             print("message not sent")
     def EM_TR_Listener(self, message):
         if message == 1:
-            msg = can.Message(arbitration_id = 0x30, data = [49,16])
+            msg = can.Message(arbitration_id = 0x30, data = [49,16], is_extended_id = False)
             print("Right EM on")
         else:
-            msg = can.Message(arbitration_id = 0x30, data = [49,0])
+            msg = can.Message(arbitration_id = 0x30, data = [49,0], is_extended_id = False)
             print("Right EM off")
 
         try:
