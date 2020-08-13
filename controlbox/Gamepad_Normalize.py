@@ -156,7 +156,7 @@ class Gamepad(Module):
 
         if controlcode == 'BTN_TR' and event.state != 0:
             self.EM_TR += event.state
-            pub.sendMessage("EM_TR" message = self.EM_TL%2)
+            pub.sendMessage("EM_TR", message = self.EM_TL%2)
 
         if (hatcode == "ABS_HAT0") and (event.state != 0):
             #pub_to_manager('profile', message = ProfileDict[str(event.code)+str(event.state)])

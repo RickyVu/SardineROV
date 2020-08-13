@@ -18,18 +18,22 @@ class CAN_Handler(Module):
     def EM_TL_Listener(self, message):
         if message == 1:
             msg = can.Message(arbitration_id = 0x30, data = [48, 16])
+            print("Left EM on")
         else:
             msg = can.Message(arbitration_id = 0x30, data = [48,0])
+            print("Left EM off")
 
         try:
             self.bus.send(msg)
         except can.CanError:
             print("message not sent")
     def EM_TR_Listener(self, message):
-        if message = 1:
+        if message == 1:
             msg = can.Message(arbitration_id = 0x30, data = [49,16])
+            print("Right EM on")
         else:
             msg = can.Message(arbitration_id = 0x30, data = [49,0])
+            print("Right EM off")
 
         try:
             self.bus.send(msg)
