@@ -132,20 +132,26 @@ class Gamepad(Module):
      
 
                 if self.control_invert == False:#tfront, tback
+<<<<<<< HEAD
                     self.movement_message = (-self.strafe, self.drive, self.yaw/1.3, -self.updown, self.tilt, 0)
                 else:
                     self.movement_message = (self.strafe, -self.drive, self.yaw/1.3, -self.updown, -self.tilt, 0)
+=======
+                    self.movement_message = (-self.strafe, self.drive, self.yaw, -self.updown, self.tilt, self.tilt)
+                else:
+                    self.movement_message = (self.strafe, -self.drive, self.yaw,  -self.updown, -self.tilt, -self.tilt)
+>>>>>>> 709032ea1ffe03f3848541551a43368eb153ac45
                 #pub_to_manager('movement', message = self.movement_message)
                 pub.sendMessage("control-movement", message = ("controller", self.movement_message))
 
         hatcode = event.code[0:8]
         controlcode = event.code
         if controlcode == "BTN_THUMBR" and event.state!=0:
-            self.thumb_profile_cycle = (self.thumb_profile_cycle-1)%4
+            self.thumb_profile_cycle = (self.thumb_profile_cycle+1)%4
             pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
         if controlcode == "BTN_THUMBL" and event.state!=0:
-            self.thumb_profile_cycle = (self.thumb_profile_cycle+1)%4
+            self.thumb_profile_cycle = (self.thumb_profile_cycle-1)%4
             pub.sendMessage("profile", message = ProfileDict[str(event.code[:-1])+str(self.thumb_profile_cycle)])
 
         if controlcode == 'BTN_TL' and event.state != 0:
