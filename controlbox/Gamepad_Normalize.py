@@ -79,7 +79,7 @@ class Gamepad(Module):
         #self.HTTP_thread.start()
 
     '''
-    def south_listener(self, message):   
+    def south_listener(self, message):
         #print("south_listener", message)
         new_message = message
         if self.control_invert == True:
@@ -104,8 +104,8 @@ class Gamepad(Module):
                 self.movement_message = (0, 0, turn_calibration, 0, 0, 0)
                 #print(self.movement_message)
                 #pub.sendMessage('movement', arg1=self.movement_message)'''
-            
-   
+
+
     def run(self):
         #global previous_message
         #global movement_message
@@ -122,25 +122,19 @@ class Gamepad(Module):
                     self.yaw = deadzoneright(normalize(event.state))
                 elif (analogcode == "ABS_RY"):
                     self.tilt = (deadzoneright(normalize(event.state)))
-                    #print(self.tilt)      
+                    #print(self.tilt)
                 if (analogcode == "ABS_Z"):
                     self.updown1 =  (-1)*normalize(event.state, Normalize_Constant_Z)
                 if (analogcode == "ABS_RZ"):
                     self.updown2 = normalize(event.state, Normalize_Constant_Z)
 
                 self.updown = half_movement_value_join(self.updown1, self.updown2)
-     
+
 
                 if self.control_invert == False:#tfront, tback
-<<<<<<< HEAD
-                    self.movement_message = (-self.strafe, self.drive, self.yaw/1.3, -self.updown, self.tilt, 0)
+                    self.movement_message = (self.strafe, self.drive, self.yaw, self.updown, self.tilt, 0)
                 else:
-                    self.movement_message = (self.strafe, -self.drive, self.yaw/1.3, -self.updown, -self.tilt, 0)
-=======
-                    self.movement_message = (-self.strafe, self.drive, self.yaw, -self.updown, self.tilt, self.tilt)
-                else:
-                    self.movement_message = (self.strafe, -self.drive, self.yaw,  -self.updown, -self.tilt, -self.tilt)
->>>>>>> 709032ea1ffe03f3848541551a43368eb153ac45
+                    self.movement_message = (-self.strafe, -self.drive, self.yaw, self.updown, -self.tilt, 0)
                 #pub_to_manager('movement', message = self.movement_message)
                 pub.sendMessage("control-movement", message = ("controller", self.movement_message))
 
@@ -159,7 +153,7 @@ class Gamepad(Module):
 
         if controlcode == 'BTN_TR' and event.state != 0:
             pass #EM
-        
+
         if (hatcode == "ABS_HAT0") and (event.state != 0):
             #pub_to_manager('profile', message = ProfileDict[str(event.code)+str(event.state)])
             pub.sendMessage("profile", message = ProfileDict[str(event.code)+str(event.state)])
@@ -188,8 +182,8 @@ class Gamepad(Module):
                 self.handler.send_continue()
             else:
                 self.handler.send_stop()
-                #self.handler.disconnect()               
-        
+                #self.handler.disconnect()
+
         if (controlcode in Directional_BTN) and (event.state == 1):
             if self.active[0] == False:
                 self.active[0] = True
@@ -198,9 +192,11 @@ class Gamepad(Module):
             else:
                     self.active[0] = False'''
 
-'''                
+
 if __name__ == "__main__":
+
+    Gamepad = Gamepad()
+    Gamepad.start(120)
     def controller_listener(message):
         print(message)
-    pub.subscribe(controller_listener,"controller-movement")
-'''
+    pub.subscribe(controller_listener,"control-movement")
