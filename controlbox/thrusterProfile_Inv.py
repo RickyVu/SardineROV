@@ -13,7 +13,7 @@ horizontalDist = [0.168,0.176,0] # FR x,y,z unit:m
 verticalDist = [0,0.182,0.97] # TF x,y,z unit:m
 Scale_Constants = (1.714, 1.714,  0.58, 2, 0.22, 0)# strafe, drive, yaw, updown, tiltFB, tiltLR
 Backward_Thrust = 1.65
-Thruster_Scale = [3,3,3,3,2.65,2.65]
+Thruster_Scale = [3,3,3,3,2.65,2.65] 
 
 FLposition = np.array((-horizontalDist[0], horizontalDist[1], horizontalDist[2]))
 FRposition = np.array((horizontalDist[0], horizontalDist[1], horizontalDist[2])) # position x,y,z
@@ -68,7 +68,7 @@ class FormulaApply(Module):
 
             StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, Tilt_LR = message[1]
 
-            #print('Gamepad in :', StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, 0)
+            print('Gamepad in :', StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, 0)
 
             StrafePower = PowerFunction(StrafePower, self.formula_modifier)
             DrivePower = PowerFunction(DrivePower, self.formula_modifier)
@@ -76,7 +76,7 @@ class FormulaApply(Module):
             UpdownPower = PowerFunction(UpdownPower, self.formula_modifier)
             TIlt_FB = PowerFunction(Tilt_FB, self.formula_modifier)
 
-            #print('Power function in :', StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, 0)
+            print('Power function in :', StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, 0)
 
             StrafePower *= Scale_Constants[0]
             DrivePower *= Scale_Constants[1]
@@ -84,7 +84,7 @@ class FormulaApply(Module):
             UpdownPower *= Scale_Constants[3]
             Tilt_FB *= Scale_Constants[4]
 
-            #print('Scaled in :', StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, 0)
+            print('Scaled in :', StrafePower, DrivePower, YawPower, UpdownPower, Tilt_FB, 0)
 
 
             exResult = np.array((StrafePower, DrivePower, UpdownPower, Tilt_FB, Tilt_LR, YawPower))
@@ -93,19 +93,19 @@ class FormulaApply(Module):
             Tinv = np.linalg.pinv(T)
             finalList = Tinv.dot(exResult)
 
-            #print('psuedoinv out:' , finalList)
+            print('psuedoinv out:' , finalList)
 
             for counter in range(6):
                 #finalList[counter, 0] /= Thruster_Scale[counter]
                 if finalList[counter, 0] < 0:
                     finalList[counter, 0] *= Backward_Thrust
-            #print('Normalize out: ', finalList)
+            print('Normalize out: ', finalList)
 
             if max(abs(finalList)) > 1:
                 for counter in range(6):
                     finalList[counter, 0] /= max(abs(finalList))
 
-            #print('truncate out: ', finalList)
+            print('truncate out: ', finalList)
             pub.sendMessage('ThrusterFL', power = finalList[0][0]*self.max_percentage)
             pub.sendMessage('ThrusterFR', power = finalList[1][0]*self.max_percentage)
             pub.sendMessage('ThrusterBL', power = finalList[2][0]*self.max_percentage)
@@ -120,7 +120,7 @@ class __Test_Case_Single__(Module):
     """docstring for ."""
 
     def run(self):
-        pub.sendMessage('control-movement', message = (0,1,1,0,0,0))
+        pub.sendMessage('control-movement', message = ('controller', (0,0,0,0,1,0)))
 
 
 if __name__ == "__main__":
